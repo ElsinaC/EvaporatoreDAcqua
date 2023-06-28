@@ -17,9 +17,9 @@ jobs:
           fetch-depth: 0
       - name: Build binary
         run: |
-          mkdir "evaporatoredacqua"
-          gcc -o "evaporatoredacqua" -Wall evaporatoredacqua.c
-          zip evaporatoredacqua-windows.zip -r "evaporatoredacqua"
+          mkdir evaporatoredacqua
+          gcc -o evaporatoredacqua\evaporatoredacqua -Wall evaporatoredacqua.c
+          compress-archive -path evaporatoredacqua -destinationpath evaporatoredacqua-windows.zip
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v3
         with:
