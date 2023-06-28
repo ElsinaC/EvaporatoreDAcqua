@@ -20,8 +20,7 @@ jobs:
           DIR="$(mktemp -d)"
           mkdir "$DIR/evaporatoredacqua"
           gcc -o "$DIR/evaporatoredacqua" -Wall evaporatoredacqua.c
-          ( cd "$DIR"; zip evaporatoredacqua.zip -r evaporatoredacqua )
-          mv "$DIR/evaporatoredacqua.zip" "evaporatoredacqua-windows.zip"
+          zip evaporatoredacqua-windows.zip -r "$DIR/evaporatoredacqua"
       - name: Upload workflow artifacts
         uses: actions/upload-artifact@v3
         with:
