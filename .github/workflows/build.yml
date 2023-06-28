@@ -1,0 +1,46 @@
+name: Build and upload binaries
+on:
+  release:
+    types: [published]
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Build binaries
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Build binary
+        run: |
+          DIR="$(mktemp -d)"
+          mkdir "$DIR/evaporatoredacqua"
+          gcc -o "$DIR/evaporatoredacqua" -Wall evaporatoredacqua.c
+          ( cd "$DIR"; zip evaporatoredacqua.zip -r evaporatoredacqua )
+          mv "$DIR/evaporatoredacqua.zip" "evaporatoredacqua-windows.zip"
+      - name: Upload workflow artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: evaporatoredacqua-binaries
+          path: evaporatoredacqua-*
+  upload:
+    name: Upload release binaries
+    if: github.event_name == 'release'
+    needs: build
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download workflow artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: evaporatoredacqua-binaries
+      - name: Upload release artifacts
+        run: gh release upload "$GITHUB_REF_NAME" evaporatoredacqua-*
+        env:
+          GH_REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
