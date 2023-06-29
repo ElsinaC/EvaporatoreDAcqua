@@ -18,6 +18,7 @@ jobs:
       - name: Build binary
         run: |
           mkdir evaporatoredacqua
+          cp LICENSE evaporatoredacqua\LICENSE
           gcc -o evaporatoredacqua\evaporatoredacqua -Wall evaporatoredacqua.c
           compress-archive -path evaporatoredacqua -destinationpath evaporatoredacqua-windows.zip
       - name: Upload workflow artifacts
