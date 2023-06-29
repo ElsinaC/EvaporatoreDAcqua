@@ -12,20 +12,25 @@
 void Exit(int sig);
 char* RandomPhrase(char* nome, char* copia_nome, int* last_num);
 
-int main(){
+int main(int argc, char* argv[]){
 	signal(SIGINT, Exit);
-	printf("Ciao, sono l'EVAPORATORE D'ACQUA e sono qui per il tuo bene!\n");
-	printf("Come ti chiami? ");
-	fflush(NULL);
 	char nome[25];
-	fgets(nome, sizeof(nome), stdin);
-	nome[strcspn(nome, "\r\n")] = 0;
+	if (argc > 1){
+		strcpy(nome, argv[1]);
+	}else{
+		printf("Ciao, sono l'EVAPORATORE D'ACQUA e sono qui per il tuo bene!\n");
+		printf("Come ti chiami? ");
+		fflush(NULL);
+		fgets(nome, sizeof(nome), stdin);
+		nome[strcspn(nome, "\r\n")] = 0;
+	}
 	printf("\nPerfetto %s, iniziamo! Non mi chiudere fino a che non andrai in un posto migliore :)\n", nome);
 	printf("Se ti odi e vuoi morire disidratato, spegnimi premendo Ctrl+C\n");
 	printf("\n");
 	fflush(NULL);
 	int last_num;
 	char copia_nome[500];
+	sleep(5);
 	while (true){
 		srand(time(NULL));
 		char* frase=RandomPhrase(nome, copia_nome, &last_num);
